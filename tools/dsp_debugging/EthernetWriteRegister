@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo ""
+echo "Usage: ./INPUT_EthernetWriteRegister <hostname> <address> <value>"
+echo ""
+
+cbi_cmd -n $1 -a $2 -r
+cbi_cmd -n $1 -a $2 -d $3 -w
+cbi_cmd -n $1 -a $2 -r

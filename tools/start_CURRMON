@@ -1,0 +1,23 @@
+#!/bin/sh
+#-----------------------------------------------
+# Simple wrapper script for starting the 4ns
+# current monitor application.
+#-----------------------------------------------
+
+cd /nfs/cesr/instr/CBPM_II_Servers
+
+
+# Production executable
+#/nfs/cesr/mnt/linux_bin/cbic -f cbic.conf-4ns-VariableGain -a Standard:Currmon-OLD -c
+
+
+# Instated 7-Dec-2010
+echo ""
+echo "******************************"
+echo "This is using version 1.5.1d!"
+echo "******************************"
+echo ""
+/home/w201/instr/CBPM_II_Servers/cbic-1.5.1d_currmon_use -f cbic.conf-4ns-VariableGain -a Standard:Currmon-OLD -c
+
+
+

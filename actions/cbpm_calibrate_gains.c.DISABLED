@@ -1,0 +1,186 @@
+/*!
+*-------------------------------------------------------------------------+
+* File         :  cbpm_calibrate_gains.c                                  |
+*                                                                         |
+* Description  :  This is a sequence of gain settings and processed data  |
+*                 acquisitions meant to allow for gain scale factors to   |
+*                 be determined for every channel on every card at every  |
+*                 available gain setting.  The sequence prompts the user  |
+*                 to establish proper beam conditions at the appropriate  |
+*                 times.                                                  |
+*                                                                         |
+* Arguments    :  None                                                    |
+*                                                                         |
+* Author       :  M. Rendina                                              |
+*-------------------------------------------------------------------------+*/
+
+#include "cbpm_includes.h"
+
+
+#define   NUM_STEPS  25
+
+#define     NUM_GAIN_SETTING_STEPS          12
+
+#define   CLUMP_SIZE         2
+
+#define   NEW_CURRENT_PROMPT_THEN_SET_GAIN   if (current_settings[gain_setting_step_count] != 0.0) {                          \
+                                               printf("\n\n\n========================================================\n");    \
+                                               printf(" Set up machine conditions as follows:\n");                            \
+                                               printf("   %1.3f mA  Train-1 Bunch-1  POSITRONS\n",                            \
+						      current_settings[gain_setting_step_count] );                            \
+                                               printf("  Hit <ENTER> when ready...\n");                                       \
+                                               printf("========================================================\n");          \
+                                               input = cbi_get_int();                                                         \
+					     }                                                                                \
+                                             printf("\n\n\n-------------------------------------------------\n");             \
+                                             GAIN_SETTING = gain_settings[gain_setting_step_count];                           \
+                                             printf("  Setting gains to setting  -- %d --.\n", GAIN_SETTING);                 \
+                                             printf("-------------------------------------------------\n");                   \
+                                             for (card = 0; card < CBPM_MAX_CARDS; card++) {                                  \
+                                               for (tblock = 0; tblock < CBPM_MAX_TIMING_BLOCKS; tblock++) {                  \
+                                                 dpt->cbpm_op_gain.active_gain_settings[card][tblock] = GAIN_SETTING;         \
+                                               }                                                                              \
+                                             }                                                                                \
+                                             gain_setting_step_count++;                                                       \
+                                             cbi_load_command(CTL_System.command_list,                                        \
+							      CTL_System.itype.num_platform_commands,                         \
+							      "SET GAINS",                                                    \
+							      CBI_FALSE);                                                     \
+
+
+
+#define   ACQUIRE_PROCESSED_DATA             printf("\n\n\n-------------------------------------------------\n");  \
+                                             printf("  Processed data acquisition (buckets 1 & 2)...\n");          \
+                                             printf("-------------------------------------------------\n");        \
+                                             cbi_clear_bp( dpt->cbpm_cmd_params.bunch_pat );                       \
+                                             cbi_set_bunch( dpt->cbpm_cmd_params.bunch_pat, 1 );                   \
+                                             cbi_set_bunch( dpt->cbpm_cmd_params.bunch_pat, 2 );                   \
+                                             dpt->cbpm_cmd_params.species          = SPECIES;                      \
+                                             dpt->cbpm_cmd_params.avg_mode         = PROC_SIMPLE_AVG_MODE;         \
+                                             dpt->cbpm_cmd_params.num_turns        = 10000;                        \
+                                             dpt->cbpm_cmd_params.scale_mode       = PED_SUB_DATA;                 \
+                                             dpt->cbpm_cmd_params.delay_cal                  = TRUE;               \
+                                             dpt->cbpm_find_delay_params.Block_Step          = 1;                  \
+                                             dpt->cbpm_find_delay_params.CalRadius           = 5;                  \
+                                             dpt->cbpm_cmd_params.generate_delay_corrections = TRUE;               \
+                                             dpt->cbpm_cmd_params.gain_cal                   = FALSE;              \
+                                             dpt->cbpm_cmd_params.reset_proc_buf_idx         = TRUE;               \
+                                             cbi_load_command(CTL_System.command_list,                             \
+							      CTL_System.itype.num_platform_commands,              \
+							      "GET PROCESSED DATA",                                \
+							      CBI_FALSE);                                          \
+
+
+
+
+
+
+int cbpm_calibrate_gains(void) {
+
+  int gain_settings[NUM_GAIN_SETTING_STEPS] = {10, 9,
+					        9, 8,
+					        8, 7,    
+					        7, 6,
+					        6, 5,
+					        5, 4  };
+
+  float current_settings[NUM_GAIN_SETTING_STEPS] = {0.125, 0.0, 
+						    0.250, 0.0, 
+						    0.800, 0.0, 
+						    1.6,   0.0, 
+						    3.2,   0.0, 
+						    7.4,   0.0   };
+  
+
+  CBPM_DATA *dp, *dpt;
+  dpt = CTL_System.p_Module_temp->dsp_data;
+
+  // Counters
+  int status, input;
+  int card, tblock, inst, entry;
+  int chan = 0;
+  int GAIN_SETTING;
+
+  //----------------------------------------------------------
+  // Variables whose values need to be preserved across 
+  // multiple iterations (must be static and init. here to 0)
+  //----------------------------------------------------------
+  static int gain_setting_step_count = 0;
+  static int SPECIES = POSITRONS;
+
+
+  CBI_COMMAND_SEQUENCE_START(NUM_STEPS)
+
+
+  CBI_COMMAND_SEQUENCE_STEP( 1 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 2 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 3 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 4 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 5 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 6 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 7 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 8 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 9 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 10 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 11 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 12 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 13 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 14 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 15 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 16 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 17 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 18 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 19 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 20 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 21 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 22 )
+    ACQUIRE_PROCESSED_DATA
+
+  CBI_COMMAND_SEQUENCE_STEP( 23 )
+    NEW_CURRENT_PROMPT_THEN_SET_GAIN
+  CBI_COMMAND_SEQUENCE_STEP( 24 )
+    ACQUIRE_PROCESSED_DATA
+
+
+  CBI_COMMAND_SEQUENCE_STEP( 25 )
+    gain_setting_step_count = 0;
+    printf("\n\n--------------------------------------------------------------\n");
+    printf("  Processed data collections complete for gain calibration.\n");
+    printf("--------------------------------------------------------------\n");
+
+
+  CBI_COMMAND_SEQUENCE_END
+
+
+}

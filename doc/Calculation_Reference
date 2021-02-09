@@ -1,0 +1,26 @@
+
+  4-button Position Calculation Formula
+-----------------------------------------
+
+Button labels
+TI: Top Inner
+BI: Bottom Inner
+TO: Top Outer
+BO: Bottom Outer
+
+Xcoeff = Horizontal button spacing distance
+Ycoeff = Vertical button spacing distance
+
+sum  = TI + BI + BO + TO
+Xnum = TO + BO - BI - TI
+Ynum = TO - BO - BI + TI
+
+X_position = Xcoeff * (Xnum/sum)
+Y_position = Ycoeff * (Ynum/sum)
+
+			      ^
+      TI=Card 0   TO=Card 3   | +Y
+ IN
+ <-
+      BI=Card 1   BO=Card 2   +X
+			      -->

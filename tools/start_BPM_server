@@ -1,0 +1,120 @@
+#!/bin/sh
+#-----------------------------------------------
+# Simple wrapper script for starting a CBPM_II
+# server with all terminal output mirrored to a 
+# uniquely named log file on LOCAL machine 
+# storage for efficiency.
+#-----------------------------------------------
+
+cd /nfs/cesr/instr/CBPM_II_Servers
+THIS_SCRIPT=`basename $0`
+
+#-----------------------------------------------
+# Configure the behavior of this script with the
+# variables here.
+#  LOG_SESSION : "Y" means all server console
+#        output will be copied to a file
+#        in the LOGFILE_DIR/<YEAR> directory
+#        of the local machine on which the
+#        server program will run.
+#
+#  LOGFILE_DIR : Directory where the logfiles
+#        shall be generated.  This script
+#        expects there to be a 4-digit year
+#        subdirectory.
+#-----------------------------------------------
+LOG_SESSION="Y"
+LOGFILE_DIR="/mnt/instr_logs/"
+
+
+#----------------------------------------------------------
+# Start up the server software with the set of arguments
+# needed for the specific server instance requested.
+#
+# The server instance requested is specified by the
+# name of this script when invoked.
+#   Valid names, are 
+#          "start_WEST"
+#          "start_EAST"
+#
+# i.e. The script that handles server startup is called
+# "start_BPM_server" and symlinking to this with the
+# name "start_WEST" will start the West BPM server, while
+# symlinking to and running this script with the name
+# "start_EAST" will bring up the East BPM server.
+#
+# This reduces overhead and potential confusion as there 
+# is only one script to maintain.
+#----------------------------------------------------------
+if [[ ${THIS_SCRIPT} == "start_WEST" ]]
+then
+    ALLOC_NAME="West"
+fi
+
+if [[ ${THIS_SCRIPT} == "start_EAST" ]]
+then
+    ALLOC_NAME="East"
+fi
+    
+NORMAL_EXE="cbic"
+DEBUG_EXE="cbic_g"
+
+CONFIG_FILE="cbic.conf-14ns-FixedGain"
+ALLOC_SCHEME="Standard"
+
+YEAR=`date +%G`
+MONTH=`date +%m`
+DAY=`date +%d`
+HH=`date +%k`
+# Make sure hour is always 2 digits
+if ( [ ${HH} -lt 10 ] )
+then
+    HH="0${HH}"
+fi
+MM=`date +%M`
+SS=`date +%S`
+
+DATE="${YEAR}"_"${MONTH}"_"${DAY}"
+TIME="${HH}${MM}${SS}"
+FULL_DATE="${DATE}_${TIME}"
+
+LOGFILE_DIR="${LOGFILE_DIR}/${YEAR}/"
+HOSTNAME=`hostname | cut -d '.' -f 1`
+LOGFILE_NAME="cbpm_${HOSTNAME}_${FULL_DATE}.log"
+FULL_LOGNAME="${LOGFILE_DIR}/${LOGFILE_NAME}"
+
+#-----------------------------------------
+
+if [ $# -eq 0 ];
+then
+    EXE_NAME=${NORMAL_EXE}
+
+elif [ $# -gt 1 ];
+then
+    echo "Command accepts either one argument or no arguments."
+    echo -e "The valid argument is \"-g\" for running the debug exe.\n"
+    exit 1
+
+else
+    if [[ $@ == "-g" ]];
+    then
+	echo -e "\n\nStarting DEBUG EXECUTABLE.\n\n"
+	EXE_NAME=${DEBUG_EXE}
+    else
+	echo -e "The only valid argument is \"-g\"."
+ 	exit 1
+    fi
+    
+fi
+
+
+echo "BPM server starting @ ${FULL_DATE}"
+
+if ( [ "${LOG_SESSION}" == "Y" ] ); then
+  ${EXE_NAME} -f ${CONFIG_FILE} -a ${ALLOC_SCHEME}:${ALLOC_NAME} -s | tee -i "${FULL_LOGNAME}"
+else
+  ${EXE_NAME} -f ${CONFIG_FILE} -a ${ALLOC_SCHEME}:${ALLOC_NAME} -s
+fi
+
+
+

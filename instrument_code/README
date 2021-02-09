@@ -1,0 +1,30 @@
+This VisualDSP 5.0 project is configured to look in specific areas OUTSIDE 
+of the CBPM-TSHARC directory tree for include files of various kinds.
+
+NOTE: For proper updating of build ID information in generated executables (.ldr)
+      files one MUST REBUILD all files in the project.  This is either due to a 
+      quirk in how VDSP calculates dependencies, lag between changes to automatically
+      updated header files gettnig propagated to disk in a timely fashion, or
+      some other mechanism.  This is a workaround until the real cause can be
+      investigated and corrected.   Again, for correct build information DO NOT
+      just hit F7 to build the project.  Rebuild all files for all build attempts.
+
+
+The areas that need to exist relative to the CBPM-TSHARC/dsp directory:
+
+../../BeamInstSupport  (directory is parallel to CBPM-TSHARC)
+
+../../acc_include      (needs to contain the utilities.h header file from 
+                        a prebuilt ACC/CESR release.)
+
+	Populate this acc_include directory with the following:
+	Copy utilities.h from:
+		/nfs/acc/libs/Linux_i686_intel/current/src/c_utils/include
+
+
+	Copy CESR_platform.h from:
+		/nfs/acc/libs/Linux_i686_intel/current/src/include/CESR_platform.h
+        TO:   
+                CBPM-TSHARC/include
+
+

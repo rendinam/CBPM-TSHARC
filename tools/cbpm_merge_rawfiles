@@ -1,0 +1,131 @@
+#!/usr/bin/python
+#
+# cbpm_merge_rawfiles
+#------------------------------------------------------------------
+
+import os, sys, string
+
+
+if len(sys.argv) != 3:
+    print ""
+    print "Usage:"
+    print sys.argv[0] + "  filename1  filename2"
+    print ""
+    print "  At present, this program will only merge 'RD_V1' RAW data files."
+    print "  These files are named 'RD-xxxxxx.dat' and are the oldest of the"
+    print "  CBPM RAW data file formats in common use."
+    print ""
+    print "This program will detect the versions of two CBPM raw data files provided to it"
+    print "and then merge the contents, appropriately keeping the FILE header from the WEST"
+    print "server's file and REMOVING the FILE header from the EAST server's file while "
+    print "doing a simple line for line merge of all the following data headers and data sections."
+    print ""
+    print "This scripts assumes that only two files were produced from a given measurement and"
+    print "that the results from all West instruments are in one file and the results from all"
+    print "East instruments are in the other."
+    print ""
+    print "It will order the merged contents with all West instruments appearing before East in"
+    print "the output.  The data from the instruments will otherwise appear in the same order in"
+    print "which it was written in each of the original files."
+    print ""
+    print "This program writes all file contents to standard output.  To redirect to a file, place"
+    print "   >  (filename)"
+    print "after the program name and its arguments."
+    print ""
+    sys.exit(1)
+
+file1 = sys.argv[1]
+file2 = sys.argv[2]
+
+if file1 == file2:
+    print "Merge files with same name?"
+    sys.exit(1)
+
+try:
+    f = open(file1, "r")
+except IOError:
+    print "Problem opening file " + file1
+    sys.exit(1)
+lines1 = f.readlines()
+f.close()
+
+
+try:
+    f = open(file2, "r")
+except IOError:
+    print "Problem opening file " + file2
+    sys.exit(1)
+lines2 = f.readlines()
+f.close()
+
+
+#--------------------------------
+# File versions available:
+#  Original      (RD) = ver 1
+#  Extended     (RDe) = ver 2
+#  New canonical (RD) = ver 3
+#--------------------------------
+def file_version( lines ):
+
+    if lines[0].find("#---------------------------------------------------") != -1:
+        version = 1
+        print "Raw data file format \"RD_V1\" found."
+        return version
+
+    
+
+
+# Begin main -----------------------------
+
+ver1 = file_version( lines1 )
+ver2 = file_version( lines2 )
+
+# Determine which input file contains West data and East data
+# so that the contents can be ordered in the output consistently
+# with West always coming before East.
+done = False
+for line in lines1:
+    for iidx in range(1,49):
+        if line.find( str(iidx)+"W" ) != -1:
+            lines_first  = lines1
+            lines_second = lines2
+            done = True
+            break
+        if line.find( str(iidx)+"E" ) != -1:
+            lines_first  = lines2
+            lines_second = lines1
+            done = True
+            break
+    if done == True:
+        break
+
+
+
+# Output the merged contents of the two files, with data from West
+# instruments preceding data from East instruments.
+if ver1 != -1 and ver2 != -1:
+
+    if ver1 != ver2:
+        print "File versions do not match, cannot merge."
+        sys.exit(2)
+
+        if version == -1:
+            print "Quitting..."
+
+
+    if ver1 == 1:
+        print "Merging two RD_V1 files..."
+        for line in lines_first:
+            sys.stdout.write(line)
+
+        lcount = 0
+        for line in lines_second:
+            lcount = lcount + 1
+            
+            if lcount < 20:
+                continue
+            sys.stdout.write(line)
+        
+        
+
+

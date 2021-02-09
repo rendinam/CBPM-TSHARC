@@ -1,0 +1,98 @@
+This is the source tree for the
+ Cornell Beam Instrumentation Control (CBI) 
+ BPM-specific (CBPM) library, example programs, and tools.
+-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+
+Library requirements:
+
+Accelerator Libraries:
+c_utils
+cesr_utils
+mpmnet
+CBInet
+BeamInstSupport
+
+
+GUI Capability Libraries:
+GTK+ 2.0
+
+
+3rd-party applications:
+Gnuplot
+
+
+
+
+Subdirectories in this project area:
+--------------------------------------
+
+actions    - Functions to obtain and prepare parameters for action 
+               execution.
+             Functions to actually perform a specific action using
+               the results of the above.
+
+          [Some actions result in a DSP command being executed,
+           others have different remote or local effects as needed.]
+
+
+BIP_input  - Input definition files for the BIParser program that 
+             generates communication data structure header and code files.
+
+comm_code  - Auto-generated code for facilitating communications with
+             BPM instruments.
+
+comm_include - Headers for communication support
+
+commstruct_output - Code for outputting variously formatted communcation
+                    structure content.
+
+data_publishing - Code for providing data in a standardized fashion to
+                  the CESR MPM control system database.
+
+doc - Documentation
+
+examples - Main routines for example programs.  
+            C-Language file input test program
+            Fortran    file input test program
+
+file_io - Mechanisms for configuration and data file input/output
+
+fitter_test - Code for instrument peak fitter testing and debugging
+
+include - Collection of headers needed for this library
+
+instrument_code - Code for the Analog Devices TigerSHARC DSP that resides
+                  in each BPM instrument.
+
+ldf - Holds the linker description file for the instrument code above.
+
+main       - Main application routine(s), as necessary to partition
+             functionality based on system capabilities.  Just one
+             program lives here for now.
+
+shared - Code definining functionality common to the control library and
+         the instrument code.
+
+system - Memory setup and signal handling code for the DAQ and control library.
+
+type_convert - Routines for data type conversion and nested communication
+               structure dereferencing
+
+user_io - Routines to facilitate user interaction with the control application.
+
+utils      - Sundry utility functions for data value/format 
+             manipulation, keyboard input, etc.
+
+
+=================================================
+
+For building TigerSHARC DSP code:
+
+You must have the Visual DSP installation directory
+as part of your %PATH% environment variable definition
+on Windows before this will run correctly.  Specifically,
+the path where the VDSP compiler of choice lives needs to
+be in your path.
+   (For TigerSHARC processors, this is
+   'ccts.exe')
+

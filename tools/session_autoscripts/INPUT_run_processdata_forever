@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#Run this script from ../../CBIC like this:
+#../CBPM-TSHARC/tools/session_autoscripts/INPUT_run_processdata_forever Custom:mgs9-first
+
+echo "path:"
+pwd
+
+echo "cbic.conf:"
+echo ""
+cat cbic.conf
+
+let i=0
+for ((;;))
+do
+let i=i+1
+
+for j in {1..40}
+do
+../CBPM-TSHARC/tools/session_autoscripts/INPUT_proc_data $1
+date
+
+echo "Progress: $i, $j"
+sleep 1
+
+done
+done

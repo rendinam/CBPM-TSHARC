@@ -1,0 +1,326 @@
+#!/home/mcr/bin/python27
+#-*-python-*-
+#
+# NOTE: Interpreter path above uses
+#       custom-installed python version
+#       more recent than LEPP's as of
+#       4-Apr-2011.
+#-----------------------------------------
+
+# Flag to enable runtime profiling.
+PROFILE = False
+
+# Standard modules
+import os, sys, string, time
+from copy import deepcopy
+import argparse
+
+# GUI elements
+from Tkinter import *
+import tkFileDialog
+# Complex widgets
+import Tix
+
+# Plotting and analysis
+import matplotlib.pyplot as plt
+import numpy as np
+
+# For code profiling
+import cProfile, pstats
+
+
+# Import custom modules
+from classes import *
+from file_io import *
+modnames = ['rdv1_file_info',
+            'rdv2_file_info',
+            'rdv3_file_info'
+            ]
+for modname in modnames:
+    exec('from %s import *' % modname)
+
+
+
+
+parser = argparse.ArgumentParser(description='CBPM Data File Management and Analysis Tool'  )
+
+
+
+args = parser.parse_args()
+
+
+
+
+
+def is_sel_single_parcel( selections ):
+    print selections
+
+
+# Count of total of number data parcels imported
+parcelcount = 0
+
+
+
+
+def main(argv=None):
+
+
+    root = Tix.Tk()
+    root.title("Filetool")
+    menubar = Menu(root)
+
+
+    tree = Tix.Tree(root)
+    tree.hlist.configure(selectmode="extended", width="50", height="16")
+
+
+    # Select a file via dialog
+    def open_file_diag( ):
+
+        global parcelcount
+
+        filename = tkFileDialog.askopenfilename(parent=root,title='Open datafile...')
+        shortname = os.path.split( filename )[1]
+
+        # Obtain version of file specified and show result.
+        ver = rd_file_version( filename )
+        ver_messages = { 1    : "Data file appears to be in \"RD_V1-a\" format.",
+                         1.01 : "Data file appears to be in \"RD_V1-b\" format.",
+                         2    : "Data file appears to be in \"RD_V2\" (aka 'RDe') format.",
+                         3    : "Data file appears to be in \"RD_V3\" (canonical) format."  }
+        print ver_messages[ ver ]
+
+        read_rd_file( filename, ver )
+
+        tree.hlist.add(str(parcelcount), itemtype=Tix.IMAGETEXT, text=shortname, image=tree.tk.call('tix', 'getimage', 'folder'))
+        
+        tree.setmode(str(parcelcount), 'close')
+        
+        for inst in data_parcels[parcelcount].insts:
+           tree.hlist.add(str(parcelcount)+'.'+inst.iheader.location,
+                          itemtype=Tix.IMAGETEXT,
+                          text=inst.iheader.location,
+                          image=tree.tk.call('tix', 'getimage', 'folder')
+                          )
+           print str(parcelcount)+'.'+inst.iheader.location
+
+           tree.setmode(str(parcelcount), 'close')
+           
+           tree.setmode(str(parcelcount)+'.'+inst.iheader.location, 'close')
+           for bidx in range(1, len(inst.bunches)+1):
+               tree.hlist.add(str(parcelcount)+'.'+inst.iheader.location+'.'+str(bidx),
+                              itemtype=Tix.IMAGETEXT,
+                              text="bunch_"+str(bidx)
+                              )
+           tree.close( str(parcelcount)+'.'+inst.iheader.location )
+           tree.close( str(parcelcount) )
+
+        parcelcount = parcelcount + 1
+
+
+
+    def abouttext( ):
+        print "\"Helptext\""
+
+
+    def plot_raw( fdata, bunch ):
+        plt.title( fdata.name )
+        plt.xlabel("Turn")
+        plt.ylabel("ADC Amplitude")
+        for button in bunch.buttons:
+            plt.plot(button)
+            plt.xlim(1,len(button))
+
+
+    def plot_hist( bunch ):
+        hist(bunch.button_0, bins=40, range=None, normed=False, cumulative=False,\
+             bottom=None, histtype='bar', align='mid', orientation='vertical',\
+             rwidth=None, log=False)
+
+
+    def plot_selected( ):
+        """ TODO: EXPAND to handle multple root levels (data parcels).
+        """
+        selections = tree.hlist.info_selection()
+        # Examine selection(s).  If only a single top-level parcel
+        # is selected, enable the "convert" button.
+        is_sel_single_parcel( selections )
+
+        for series in selections:
+            path  = series.split('.')
+            pidx  = int(path[0])
+            iname = path[1]
+            for inst in data_parcels[pidx].insts:
+                if inst.iheader.location == iname:
+                    for bunch in inst.bunches:
+                        plot_raw( data_parcels[pidx], bunch  )
+        print "Get current"
+        plt.get_current_fig_manager()
+        print "show"
+        plt.show()
+
+
+
+    def convert_file( ):
+        print "Placeholder for file conversion method."
+
+
+    def ask_in_dir( ):
+        return tkFileDialog.askdirectory(parent=root, initialdir=os.getcwd, title='Please select an INPUT directory')
+
+    def ask_out_dir( ):
+        return tkFileDialog.askdirectory(parent=root, initialdir=os.getcwd, title='Please select an OUTPUT directory')
+
+    # Create the "File" pulldown menu and add it to the menu bar
+    filemenu = Menu(menubar, tearoff=0)
+    filemenu.add_command(label="Open", command=open_file_diag)
+    filemenu.add_separator()
+    filemenu.add_command(label="Exit", command=root.quit)
+    menubar.add_cascade(label="File", menu=filemenu)
+
+    # Create the "Help" pulldown menu and add it to the menu bar
+    helpmenu = Menu(menubar, tearoff=0)
+    helpmenu.add_command(label="About",     command=abouttext)
+    menubar.add_cascade(label="Help", menu=helpmenu)
+
+    root.config(menu=menubar)
+
+    b = Button(root, text="In:  " + os.getcwd(), justify=LEFT, command=ask_in_dir)
+    b.grid(row=1, columnspan=4)
+
+    b = Button(root, text="Out  " + os.getcwd(), justify=LEFT, command=ask_out_dir)
+    b.grid(row=2, columnspan=4)
+
+    w = Label(root, text="Data Selection:", justify=CENTER)
+    w.grid(row=3, column=1)
+
+
+    tree.grid(row=4, columnspan=2)
+
+
+    b = Button(root, text="Plot Selected", command=plot_selected )
+    b.grid(row=5, column=1)
+
+    b = Button(root, text="Convert", command=convert_file )
+    b.grid(row=6, column=1)
+
+
+    an_method = StringVar(root)
+    an_method.set("Plot Method")
+
+    an_options = ["Raw", "Histogram", "Fit"]
+
+    an_methods = Menubutton(root, text="YES")
+    an_methods.grid(row=3, column=2)
+
+
+    mainloop()
+
+
+
+
+if PROFILE:
+
+    cProfile.run('main()', 'file_read_profile')
+    p = pstats.Stats('file_read_profile')
+    p.sort_stats('cumulative').print_stats(10)
+
+else:
+
+    if __name__ == "__main__":
+        main()
+
+
+
+
+
+
+
+
+
+
+
+## #-----------------------------------------------
+## # Set up for merging of files.
+## #  Open files and read in data for examination.
+## #-----------------------------------------------
+## def file_merge_prep( file1, file2 ):
+
+##     if file1 == file2:
+##         print "Merge files with same name?"
+##         sys.exit(1)
+
+##     try:
+##         file = open(file1, "r")
+##     except IOError:
+##         print "Problem opening file " + file1
+##         sys.exit(1)
+        
+##     lines1 = file.readlines()
+##     file.close()
+
+
+##     try:
+##         file = open(file2, "r")
+##     except IOError:
+##         print "Problem opening file " + file2
+##         sys.exit(1)
+##     lines2 = file.readlines()
+##     file.close()
+
+
+
+
+
+## def merge_files():
+    
+##     ver1 = rd_file_version( lines1 )
+##     ver2 = rd_file_version( lines2 )
+    
+##     # Determine which input file contains West data and East data
+##     # so that the contents can be ordered in the output consistently
+##     # with West always coming before East.
+##     done = False
+##     for line in lines1:
+##         for iidx in range(1,49):
+##             if line.find( str(iidx)+"W" ) != -1:
+##                 lines_first  = lines1
+##                 lines_second = lines2
+##                 done = True
+##                 break
+##             if line.find( str(iidx)+"E" ) != -1:
+##                 lines_first  = lines2
+##                 lines_second = lines1
+##                 done = True
+##                 break
+##             if done == True:
+##                 break
+
+
+
+##     # Output the merged contents of the two files, with data from West
+##     # instruments preceding data from East instruments.
+##     if ver1 != -1 and ver2 != -1:
+                
+##         if ver1 != ver2:
+##             print "File versions do not match, cannot merge."
+##             sys.exit(2)
+
+##             if version == -1:
+##                 print "Quitting..."
+
+            
+##         if ver1 == 1:
+##             print "Merging two RD_V1 files..."
+##             for line in lines_first:
+##                 sys.stdout.write(line)
+
+##             lcount = 0
+##             for line in lines_second:
+##                 lcount = lcount + 1
+            
+##                 if lcount < 20:
+##                     continue
+##                 sys.stdout.write(line)
+        
+

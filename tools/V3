@@ -1,0 +1,391 @@
+Instrument_Type   : BPM
+Command_ID        : GET RAW VIA MPM
+File_type         : RAW DATA
+File_ID           : 4080
+File_Version      : 3
+Timestamp         : Thu Mar 10 17:04:58 2011
+Core_commstruct_v : 1009071111
+Plat_commstruct_v : 1009271512
+Bunch_Patt_Name   : 
+Bunch_Patt_(hex)  : 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 
+Species           : POSITRONS
+Num_Instruments   : 9
+Number_of_Bunches : 2
+Number_of_Turns   : 5
+Turn_Spacing      : 0
+Timing_Setup      : 14ns_FIX_G
+Trigger           : ****
+
+CESR CONDX        : 37
+CERN Current Raw  : 364702
+CERN Current mA   : 348.334
+
+Location          : 1X
+BPM_hostname      : ctacfXX1
+BPM_IP_Address    : 192.168.32.1
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17166    11138     1058     4432
+0       828600d    17124    11171     1021     4366
+0       f03700d    17164    11129     1037     4446
+0       5e6840c    17130    11100     1006     4391
+0       cb9980c    17101    11131     1039     4415
+0       14d4c0d    27166    21138    11058    14432
+0       828600d    27124    21171    11021    14366
+0       f03700d    27164    21129    11037    14446
+0       5e6840c    27130    21100    11006    14391
+0       cb9980c    27101    21131    11039    14415
+Location          : 2X
+BPM_hostname      : ctacfXX2
+BPM_IP_Address    : 192.168.32.2
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17210    11146     1011     4408
+0       828600d    17158    11082     1063     4398
+0       f03700d    17092    11044     0978     4337
+0       5e6840c    17087    11068     0979     4312
+0       cb9980c    16838    10874     0901     4242
+0       14d4c0d    27210    21146    11011    14408
+0       828600d    27158    21082    11063    14398
+0       f03700d    27092    21044    10978    14337
+0       5e6840c    27087    21068    10979    14312
+0       cb9980c    26838    20874    10901    14242
+Location          : 3X
+BPM_hostname      : ctacfXX3
+BPM_IP_Address    : 192.168.32.3
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17057    11029     0939     4291
+0       828600d    17073    10956     0989     4323
+0       f03700d    16731    10856     0803     4180
+0       5e6840c    17067    11076     1011     4415
+0       cb9980c    17101    11162     1062     4426
+0       14d4c0d    27057    21029    10939    14291
+0       828600d    27073    20956    10989    14323
+0       f03700d    26731    20856    10803    14180
+0       5e6840c    27067    21076    11011    14415
+0       cb9980c    27101    21162    11062    14426
+Location          : 4X
+BPM_hostname      : ctacfXX4
+BPM_IP_Address    : 192.168.32.4
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17166    11138     1058     4432
+0       828600d    17124    11171     1021     4366
+0       f03700d    17164    11129     1037     4446
+0       5e6840c    17130    11100     1006     4391
+0       cb9980c    17101    11131     1039     4415
+0       14d4c0d    27166    21138    11058    14432
+0       828600d    27124    21171    11021    14366
+0       f03700d    27164    21129    11037    14446
+0       5e6840c    27130    21100    11006    14391
+0       cb9980c    27101    21131    11039    14415
+Location          : 5X
+BPM_hostname      : ctacfXX5
+BPM_IP_Address    : 192.168.32.5
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17210    11146     1011     4408
+0       828600d    17158    11082     1063     4398
+0       f03700d    17092    11044     0978     4337
+0       5e6840c    17087    11068     0979     4312
+0       cb9980c    16838    10874     0901     4242
+0       14d4c0d    27210    21146    11011    14408
+0       828600d    27158    21082    11063    14398
+0       f03700d    27092    21044    10978    14337
+0       5e6840c    27087    21068    10979    14312
+0       cb9980c    26838    20874    10901    14242
+Location          : 6X
+BPM_hostname      : ctacfXX6
+BPM_IP_Address    : 192.168.32.6
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17057    11029     0939     4291
+0       828600d    17073    10956     0989     4323
+0       f03700d    16731    10856     0803     4180
+0       5e6840c    17067    11076     1011     4415
+0       cb9980c    17101    11162     1062     4426
+0       14d4c0d    27057    21029    10939    14291
+0       828600d    27073    20956    10989    14323
+0       f03700d    26731    20856    10803    14180
+0       5e6840c    27067    21076    11011    14415
+0       cb9980c    27101    21162    11062    14426
+Location          : 7X
+BPM_hostname      : ctacfXX7
+BPM_IP_Address    : 192.168.32.7
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17166    11138     1058     4432
+0       828600d    17124    11171     1021     4366
+0       f03700d    17164    11129     1037     4446
+0       5e6840c    17130    11100     1006     4391
+0       cb9980c    17101    11131     1039     4415
+0       14d4c0d    27166    21138    11058    14432
+0       828600d    27124    21171    11021    14366
+0       f03700d    27164    21129    11037    14446
+0       5e6840c    27130    21100    11006    14391
+0       cb9980c    27101    21131    11039    14415
+Location          : 8X
+BPM_hostname      : ctacfXX8
+BPM_IP_Address    : 192.168.32.8
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17210    11146     1011     4408
+0       828600d    17158    11082     1063     4398
+0       f03700d    17092    11044     0978     4337
+0       5e6840c    17087    11068     0979     4312
+0       cb9980c    16838    10874     0901     4242
+0       14d4c0d    27210    21146    11011    14408
+0       828600d    27158    21082    11063    14398
+0       f03700d    27092    21044    10978    14337
+0       5e6840c    27087    21068    10979    14312
+0       cb9980c    26838    20874    10901    14242
+Location          : 9X
+BPM_hostname      : ctacfXX9
+BPM_IP_Address    : 192.168.32.9
+Detector_Type     : STD
+Detector_Coeffs   : 0.028800  0.022300
+EXE_Name          : CBPM_II.ldr
+EXE_Build_ID      : 1102281008
+Dig.Board_FPGA    : 5.8
+Front-End_FPGAs   : 45 45 45 45
+Timing_Setup      : 14ns_FIX_G
+Number_of_Turns   : 5
+Turn_sync_counter : 352423
+Turn_spacing      : 0
+Trigger           : A+enable
+Bunch_Pat_offsets : 298  295
+Com_Turnmrk_Dly   : -1
+Blk_Turnmrk_Dlys  : 4  7
+Block_Delays      : 1386  551
+Channel_Delays    : 533  583  542  555    539  572  525  557
+Gain_Settings     : 0  0  0  0    0  0  0  0
+Gain_Codes        : 0  0  0  0    0  0  0  0
+Gain_Coeffs       : 5.127910  4.945140  4.599530  5.247430    5.185670  4.895840  4.642850  5.195630
+Pedestals         : -51.735359  -36.757809  -73.936523  -37.682621    -48.457031  -60.788090  -70.795891  -27.183590
+Digital_Temp_C    : 45.0
+Card_Temps_C      : 61.0  61.0  63.0  60.0
+ADC_saturation    : 0000    0000    
+ADC_High          : 1100    1100    
+ADC_Low           : 0000    0000    
+# Timing  Encoded     Card-0   Card-1   Card-2   Card-3 
+# Block  Phase word   b3(TI)   b1(BI)   b2(BO)   b4(TO) 
+--BEGIN DATA--
+0       14d4c0d    17057    11029     0939     4291
+0       828600d    17073    10956     0989     4323
+0       f03700d    16731    10856     0803     4180
+0       5e6840c    17067    11076     1011     4415
+0       cb9980c    17101    11162     1062     4426
+0       14d4c0d    27057    21029    10939    14291
+0       828600d    27073    20956    10989    14323
+0       f03700d    26731    20856    10803    14180
+0       5e6840c    27067    21076    11011    14415
+0       cb9980c    27101    21162    11062    14426

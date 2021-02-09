@@ -1,0 +1,6 @@
+#!/bin/bash
+export ACC_FORCE_32_BIT=N
+export ACC_RELEASE_REQUEST=devel;
+source ~cesrulib/bin/acc_vars.sh
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${ACC_RELEASE_DIR}/solib 
+matlab &

@@ -1,0 +1,195 @@
+#!/home/mcr/bin/python27
+#-*-python-*-
+#
+# NOTE: Interpreter path above uses
+#       custom-installed python version
+#       more recent than LEPP's as of
+#       4-Apr-2011.
+#
+# CBPM Data File Converstion Tool
+# This program reads a single RAW (turn-by-turn)
+# CBPM data file and outputs another conforming
+# to a user-provided version specification
+# See the list of command-line options below for
+# the supported file versions.
+#-------------------------------------------------
+
+# Flag to enable runtime profiling.
+PROFILE = False
+
+# Standard modules
+import os, sys, string, time
+from copy import deepcopy
+import argparse
+
+# GUI elements
+from Tkinter import *
+import tkFileDialog
+import Tix
+
+# Plotting and analysis
+import matplotlib.pyplot as plt
+import numpy as np
+
+# For code profiling
+import cProfile, pstats
+
+
+# Custom modules
+from classes import *
+from file_io import *
+modnames = ['rdv1_file_info',
+            'rdv2_file_info',
+            'rdv3_file_info'
+            ]
+for modname in modnames:
+    exec('from %s import *' % modname)
+
+
+
+# Configure the command line argument parser
+parser = argparse.ArgumentParser(description='CBPM Data File Converstion Tool\n\n'
+                                 'This program reads a single RAW (turn-by-turn) CBPM data file and outputs\n'
+                                 'another conforming to a user-provided version specification.\n'
+                                 'See the list of command-line options below for the supported file versions.\n',
+                                 formatter_class=argparse.RawDescriptionHelpFormatter
+                                 )
+
+
+mutex_group1 = parser.add_mutually_exclusive_group()
+
+mutex_group1.add_argument('-1',
+                          action='store_true',
+                          dest='v1',
+                          default=False,
+                          help='convert to version 1'
+                          )
+
+mutex_group1.add_argument('-1a',
+                          action='store_true',
+                          dest='v1a',
+                          default=False,
+                          help='convert to version 1a (aka 1.01)'
+                          )
+
+mutex_group1.add_argument('-2',
+                          action='store_true',
+                          dest='v2',
+                          default=False,
+                          help='convert to version 2 (aka RDe, or Raw Data Extended)'
+                          )
+
+mutex_group1.add_argument('-3',
+                          action='store_true',
+                          dest='v3',
+                          default=False,
+                          help='convert to version 3'
+                          )
+
+
+parser.add_argument('-v',
+                    action='store_true',
+                    dest='verbose',
+                    default=False,
+                    help='verbose output (default is silent)'
+                    )
+
+parser.add_argument('infile',
+                    nargs='?',
+                    action='store',
+                    help='input filename for conversion via command-line request')
+
+
+parser.add_argument('outfile',
+                    nargs='?',
+                    help='output filename for conversion via command-line request')
+
+
+args = parser.parse_args()
+
+target_version = 0
+
+if args.v1:
+    target_version = 1
+elif args.v1a:
+    target_version = 1.01
+elif args.v2:
+    target_version = 2
+elif args.v3:
+    target_version = 3
+else:
+    print "Target version invalid!"
+
+
+
+if args.infile == None or args.outfile == None or target_version == 0:
+    parser.print_help()
+    sys.exit(0)
+
+
+
+def main(argv=None):
+
+
+    ver = rd_file_version( args.infile )
+    
+    ver_messages = { 0    : "File format not recognized.",
+                     1    : "Data file appears to be in \"RD_V1\" format.",
+                     1.01 : "Data file appears to be in \"RD_V1.01\" format.",
+                     2    : "Data file appears to be in \"RD_V2\" (aka 'RDe') format.",
+                     3    : "Data file appears to be in \"RD_V3\" (canonical) format."  }
+    if args.verbose:
+        print ver_messages[ ver ]
+    
+    if ver == 0:
+        sys.exit(1)
+        
+    read_rd_file( args.infile, ver )
+
+    if args.verbose:
+        print "Read {} instruments x {} bunches x {} turns in {:3.2f}s.".format(
+            len(data_parcels[0].insts),
+            len(data_parcels[0].insts[0].bunches),
+            len(data_parcels[0].insts[0].bunches[0].buttons[0]),
+            data_parcels[0].read_time_s )
+        
+    all_sets = [
+        header_field_sets,
+        cesr_field_sets,
+        inst_field_sets
+        ]    
+    
+    writer_set = custom_field_writer_sets[ver]
+    
+    if target_version == 1:
+        outfile = args.outfile
+        rdv1a_write_file( all_sets, custom_field_writer_sets, data_parcels[0], outfile )
+        
+    if target_version == 1.01:
+        outfile = args.outfile
+        rdv1b_write_file( all_sets, custom_field_writer_sets, data_parcels[0], outfile )
+        
+    if target_version == 2:
+        outfile = args.outfile
+        rdv2_write_file( header_field_sets, custom_field_writer_sets, data_parcels[0], outfile )
+        
+    if target_version == 3:
+        outfile = args.outfile
+        rdv3_write_file( all_sets, custom_field_writer_sets, data_parcels[0], outfile )
+
+
+if PROFILE:
+
+    cProfile.run('main()', 'file_read_profile')
+    p = pstats.Stats('file_read_profile')
+    p.sort_stats('cumulative').print_stats(10)
+
+else:
+
+    if __name__ == "__main__":
+        main()
+
+
+
+
+

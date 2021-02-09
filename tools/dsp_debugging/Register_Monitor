@@ -1,0 +1,43 @@
+#!/bin/bash
+
+# Script to monitor DSP Debug Registers
+
+echo "Usage: ./Register_Monitor <hostname>"
+
+for ((;;))
+do
+
+cbi_cmd -n $1 -a 0x0C0FF020 -r
+echo "Heartbeat"
+cbi_cmd -n $1 -a 0x0C0FF021 -r
+echo "Debug Run"
+cbi_cmd -n $1 -a 0x0C0FF022 -r
+echo "Debug Step"
+cbi_cmd -n $1 -a 0x0C0FF023 -r
+echo "Location"
+cbi_cmd -n $1 -a 0x0C0FF024 -r
+echo "Breakpoint"
+
+cbi_cmd -n $1 -a 0x0C0FF025 -r
+echo "Input"
+cbi_cmd -n $1 -a 0x0C0FF026 -r
+echo "Output"
+
+cbi_cmd -n $1 -a 0x0C0FF027 -r
+echo "Value1"
+cbi_cmd -n $1 -a 0x0C0FF028 -r
+echo "Value2"
+cbi_cmd -n $1 -a 0x0C0FF029 -r
+echo "Value3"
+cbi_cmd -n $1 -a 0x0C0FF030 -r
+echo "Value4"
+cbi_cmd -n $1 -a 0x0C0FF031 -r
+echo "Value5"
+
+cbi_cmd -n $1 -a 0x0C0FF032 -r
+echo "Function Status"
+
+sleep 1
+clear
+
+done

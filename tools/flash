@@ -1,0 +1,47 @@
+#!/bin/sh
+#
+# Convenience script to program the FLASH memory of a BPM instrument
+# with a loader (.ldr) file.
+#
+# Dependencies:
+#   The cbi_cmd program (part of cbi_net) msut exists somewhere on
+#   your path.
+#---------------------------------------------------------------------
+
+HOST=$1
+LDR=$2
+
+# Regex check for BPM nicknames
+# If period is present, assume this is a full IP address.
+# Otherwise, treat it as a nickname that is the last quad
+# of the IP address.
+if [[ "$1" =~ "\." ]]
+then
+    echo "Using full IP address"
+    HOST=$1
+else
+    HOST="ctacf${HOST}"
+fi
+
+
+if ( [ $# != 2 ] ) then
+  echo ""
+  echo "Convenience script For flashing a CBPM-II instrument with"
+  echo "a software image.  This does NOT program FPGAs."
+  echo ""
+  echo "Usage:"
+  echo "  flash <IP Address or HOST NICKNAME> <LDR-File>"
+  echo ""
+  echo " (HOST NICKNAME is the 3-digit numerical portion of the instrument's"
+  echo "  hostnname. Assumes CESR-TA-style instrument host name"
+  echo "  convention ctacf###)"
+  exit 0
+fi
+
+echo "Downloading the file ${LDR}"
+echo "into the instrumentation unit ${HOST}"
+echo "and enabling the DSP..."
+sleep 2
+
+cbi_cmd -n ${HOST} -a 0x10040001 -d 0 -w -i ${LDR} -f -d 1 -w -d 0 -w -d 1 -w
+

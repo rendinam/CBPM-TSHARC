@@ -1,0 +1,41 @@
+#!/nfs/opt/python/bin/python
+#-*- python -*-
+#------------------------------------------------------
+# Simple script to dump the entire contents of the
+# 4ns current monitor control mailbox that is shared
+# with the injection software WINJ, in a formatted
+# fashion, labelling all fields implemented.
+#------------------------------------------------------
+
+import subprocess
+
+
+p = subprocess.Popen("fff vxgetn CSR 2NS CCON",
+                         shell=True,
+                         stdout=subprocess.PIPE,
+                         stderr=subprocess.STDOUT)
+
+for line in p.stdout.readlines():
+    if line.find("[dec]") != -1:
+        line = line.strip()
+        values = line.split(']')[1]
+
+species = {0:"POSITRONS",
+           1:"ELECTRONS"}
+
+
+values = values.split()
+
+temp_values = []
+for value in values:
+    temp_values.append( int(value) )
+
+values = temp_values
+
+print "Current monitor server ID (ele 1) = " + str(values[0])
+print "Handshake value           (ele 2) = " + str(values[1])
+print "Bunch spacing requested   (ele 3) = " + str(values[2])
+print "Species requested         (ele 4) = " + str(values[3]) + " (" + species[ values[3] ] + ")"
+
+    
+
